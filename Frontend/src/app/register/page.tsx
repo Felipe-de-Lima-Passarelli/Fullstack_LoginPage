@@ -35,15 +35,18 @@ export default function Page() {
       setError("Senha inválida");
       return;
     }
-    const response = await fetch("http://localhost:3001/cadastro", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: user.Nome,
-        email: user.Email,
-        password: user.Senha,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/cadastro`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user.Nome,
+          email: user.Email,
+          password: user.Senha,
+        }),
+      },
+    );
 
     const data = await response.json();
 
