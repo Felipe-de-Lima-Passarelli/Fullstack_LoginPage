@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://fullstack-login-page-kappa.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
   }),
 );
