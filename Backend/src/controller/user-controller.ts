@@ -1,39 +1,52 @@
+//Express Type
 import type { Request, Response } from "express";
+
+//Prisma
 import { prisma } from "../db.js";
 
 export const login = async (request: Request, response: Response) => {
-  const user = request.body;
+  try {
+    const user = request.body;
 
-  const findUser = await prisma.user.findUnique({
-    where: { email: user.email, password: user.password },
-  });
+    const findUser = await prisma.user.findUnique({
+      where: { email: user.email, password: user.password },
+    });
 
-  if (findUser === null) {
-    response.json({ message: "Email ou senha inválidos" });
-    return;
+    if (findUser === null) {
+      response.status(401).json({ message: "Email ou senha inválidos" });
+      return;
+    }
+
+    console.log(findUser);
+    response.status(200).json(findUser);
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ message: "Erro interno do Servidor" });
   }
-
-  console.log(findUser);
-  response.json(findUser);
 };
 
 export const register = async (request: Request, response: Response) => {
-  const user = request.body;
+  try {
+    const user = request.body;
 
-  const findUser = await prisma.user.findUnique({
-    where: { email: user.email },
-  });
+    const findUser = await prisma.user.findUnique({
+      where: { email: user.email },
+    });
 
-  if (findUser !== null) {
-    response.status(400).json({ message: "Email já cadastrado" });
-    return;
+    if (findUser !== null) {
+      response.status(409).json({ message: "Email já cadastrado" });
+      return;
+    }
+
+    await prisma.user.create({
+      data: { name: user.name, email: user.email, password: user.password },
+    });
+
+    response.status(201).json({
+      message: "Cadastro realizado com sucesso!",
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ message: "Erro interno do servidor" });
   }
-
-  await prisma.user.create({
-    data: { name: user.name, email: user.email, password: user.password },
-  });
-
-  response.json({
-    message: "Cadastro realizado com sucesso!",
-  });
 };

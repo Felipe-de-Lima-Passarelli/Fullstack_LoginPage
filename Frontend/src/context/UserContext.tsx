@@ -6,6 +6,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 //Utils
 import { UserLogged } from "@/utils/ComponentsStyle";
 
+//ContextUser Type
 type UserContextType = {
   loggedUser: UserLogged;
   setLoggedUser: React.Dispatch<React.SetStateAction<UserLogged>>;

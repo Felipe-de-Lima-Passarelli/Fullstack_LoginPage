@@ -1,4 +1,7 @@
+//Express
 import { Router } from "express";
+
+//userController Function
 import { login, register } from "./controller/user-controller.js";
 
 export const router = Router();

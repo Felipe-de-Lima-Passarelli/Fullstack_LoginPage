@@ -5,7 +5,7 @@ export const buttonsStyle = [
   "text-[#2563EB] font-semibold bg-white py-2 px-4 rounded-md cursor-pointer",
 ];
 
-//User Type
+//User Types
 export type UserType = {
   Nome: string;
   Email: string;
