@@ -27,27 +27,42 @@ export default function Home() {
   const router = useRouter();
 
   const handleLogin = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: user.Email,
-        password: user.Senha,
-      }),
-    });
+    setError("");
 
-    const data = await response.json();
-    if (data.message !== "Email ou senha inválidos") {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email: user.Email,
+          password: user.Senha,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message);
+        setUser({
+          Email: "",
+          Senha: "",
+        });
+        return;
+      }
+
       setLoggedUser({
         nome: data.name,
         email: data.email,
         id: data.id,
       });
+
       router.push("/dashboard");
-    } else {
-      console.log(data);
-      setError(data.message);
-      setUser({ Email: "", Senha: "" });
+    } catch (error) {
+      console.error(error);
+      setError("Não foi possível conectar ao servidor.");
     }
   };
 

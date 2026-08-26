@@ -2,9 +2,12 @@
 import express from "express";
 import { connection } from "./src/db.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { router } from "./src/routes.js";
 
 const app = express();
+
+app.use(cookieParser());
 
 app.use(express.json());
 

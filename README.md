@@ -1,19 +1,28 @@
-# Login Page with Prisma
+# Fullstack Login Page
 
-Aplicação Full Stack de cadastro e login desenvolvida com Next.js, React, TypeScript, Express, Prisma e PostgreSQL.
+Aplicação Full Stack de cadastro, autenticação e visualização de dados do usuário, desenvolvida para praticar a integração entre Front-End, Back-End e banco de dados.
+
+O projeto foi desenvolvido utilizando Next.js e TypeScript no Front-End, Express no Back-End, Prisma como ORM e PostgreSQL como banco de dados.
+
+A aplicação também foi preparada para funcionar em ambiente de produção, com Front-End e Back-End hospedados separadamente e banco de dados PostgreSQL remoto.
 
 ## Descrição
 
-O projeto consiste em uma aplicação de autenticação com fluxo de cadastro, login e acesso a uma página de dashboard.
+O projeto consiste em uma aplicação de autenticação onde o usuário pode criar uma conta, realizar login e acessar um dashboard com suas informações.
 
-A aplicação é dividida em duas partes:
+Durante o desenvolvimento, o projeto também foi utilizado para praticar conceitos importantes de uma aplicação Full Stack, como:
 
-- **Front-End:** desenvolvido com Next.js, React, TypeScript e TailwindCSS.
-- **Back-End:** desenvolvido com Express, TypeScript, Prisma e PostgreSQL.
-
-O Front-End envia os dados dos formulários para uma API REST criada com Express. O Back-End recebe essas informações, realiza as validações necessárias e utiliza o Prisma para consultar ou inserir usuários no banco de dados PostgreSQL.
-
-Após um login bem-sucedido, os dados retornados pela API são armazenados em um Context do React e o usuário é direcionado para o dashboard.
+- Comunicação entre Front-End e Back-End.
+- Criação e consumo de uma API REST.
+- Persistência de dados em PostgreSQL.
+- Utilização do Prisma ORM.
+- Criação e aplicação de migrations.
+- Gerenciamento de estado com React Context API.
+- Proteção de acesso ao dashboard.
+- Configuração de CORS.
+- Utilização de variáveis de ambiente.
+- Deploy de aplicações separadas.
+- Comunicação entre serviços em produção.
 
 ## Tecnologias Utilizadas
 
@@ -22,195 +31,153 @@ Após um login bem-sucedido, os dados retornados pela API são armazenados em um
 - Next.js
 - React
 - TypeScript
-- TailwindCSS
+- Tailwind CSS
 - Context API
-- Fetch API
 
 ### Back-End
 
 - Node.js
 - Express
 - TypeScript
+- CORS
 - Prisma ORM
 - PostgreSQL
-- CORS
+
+### Infraestrutura
+
+- Vercel — hospedagem do Front-End
+- Render — hospedagem do Back-End
+- Neon — banco de dados PostgreSQL
+
+## Funcionalidades
+
+### Cadastro
+
+O usuário pode criar uma nova conta informando:
+
+- Nome
+- E-mail
+- Senha
+- Confirmação de senha
+
+Antes de realizar o cadastro, o Front-End verifica os dados básicos do formulário.
+
+O Back-End também verifica se o e-mail informado já está cadastrado no banco de dados.
+
+### Login
+
+O usuário pode realizar login utilizando:
+
+- E-mail
+- Senha
+
+As informações são enviadas para a API do Back-End, que consulta o banco de dados através do Prisma.
+
+Caso as credenciais sejam válidas, os dados necessários do usuário são disponibilizados para o Front-End.
+
+### Dashboard
+
+Após o login, o usuário é direcionado para o dashboard.
+
+A página apresenta informações do usuário autenticado:
+
+- Nome
+- E-mail
+- ID
+
+O acesso ao dashboard também possui proteção para impedir que a página seja utilizada simplesmente através da navegação direta para a rota.
+
+### Logout
+
+A aplicação possui uma opção para sair da conta e retornar para a página de login.
 
 ## Arquitetura
 
-O projeto possui uma separação entre Front-End e Back-End:
+O projeto é dividido em três partes principais:
 
 ```text
 ┌─────────────────────┐
 │      Front-End      │
-│ Next.js + React     │
-│ TypeScript          │
-│ TailwindCSS         │
+│      Next.js        │
+│     TypeScript      │
 └──────────┬──────────┘
            │
            │ HTTP / JSON
            ▼
 ┌─────────────────────┐
-│       Back-End      │
-│ Express + TypeScript│
-│       Prisma        │
+│      Back-End       │
+│      Express        │
+│     TypeScript      │
 └──────────┬──────────┘
            │
            │ Prisma
            ▼
 ┌─────────────────────┐
-│     PostgreSQL      │
-│        User         │
+│      PostgreSQL     │
+│        Neon         │
 └─────────────────────┘
 ```
 
-## Funcionalidades
+O Front-End é responsável pela interface e interação com o usuário.
 
-- Cadastro de usuários.
-- Login de usuários.
-- Verificação de e-mail já cadastrado.
-- Validação básica dos campos de cadastro.
-- Validação de senha e confirmação de senha.
-- Verificação de credenciais no login.
-- Exibição de mensagens de erro.
-- Redirecionamento para o dashboard após login.
-- Exibição dos dados do usuário logado.
-- Navegação entre login, cadastro e dashboard.
-- Comunicação entre Front-End e Back-End através de API REST.
-- Persistência dos usuários em PostgreSQL.
+O Back-End é responsável pelas rotas da API, regras relacionadas ao cadastro e login e comunicação com o banco de dados.
 
-## Rotas da API
+O PostgreSQL é responsável pela persistência das informações.
 
-O Back-End possui duas rotas relacionadas aos usuários.
-
-### `POST /login`
-
-Responsável por verificar as credenciais fornecidas pelo usuário.
-
-Exemplo de requisição:
-
-```json
-{
-  "email": "usuario@email.com",
-  "password": "senha"
-}
-```
-
-Em caso de credenciais inválidas, a API retorna:
-
-```json
-{
-  "message": "Email ou senha inválidos"
-}
-```
-
-Em caso de sucesso, os dados do usuário encontrado são retornados.
-
-### `POST /cadastro`
-
-Responsável pelo cadastro de novos usuários.
-
-Exemplo de requisição:
-
-```json
-{
-  "name": "Nome do Usuário",
-  "email": "usuario@email.com",
-  "password": "senha"
-}
-```
-
-Caso o e-mail já esteja cadastrado, a API retorna status `400` com:
-
-```json
-{
-  "message": "Email já cadastrado"
-}
-```
-
-Em caso de sucesso:
-
-```json
-{
-  "message": "Cadastro realizado com sucesso!"
-}
-```
+O Prisma funciona como camada de acesso ao banco de dados.
 
 ## Estrutura do Projeto
 
-Estrutura baseada nos arquivos informados:
+O repositório possui Front-End e Back-End no mesmo projeto:
 
 ```text
-projeto/
-├── backend/
+Fullstack_LoginPage/
+│
+├── Backend/
 │   ├── prisma/
+│   │   ├── migrations/
 │   │   └── schema.prisma
+│   │
 │   ├── src/
 │   │   ├── controller/
 │   │   │   └── user-controller.ts
 │   │   ├── db.ts
 │   │   └── routes.ts
-│   └── index.ts
+│   │
+│   ├── index.ts
+│   ├── prisma.config.ts
+│   ├── package.json
+│   └── package-lock.json
 │
-└── frontend/
-    └── src/
-        ├── app/
-        │   ├── dashboard/
-        │   │   └── page.tsx
-        │   ├── register/
-        │   │   └── page.tsx
-        │   ├── globals.css
-        │   ├── layout.tsx
-        │   └── page.tsx
-        ├── components/
-        │   ├── Input.tsx
-        │   └── InputLogin.tsx
-        ├── context/
-        │   └── UserContext.tsx
-        └── utils/
-            └── ComponentsStyle.ts
+├── src/
+│   ├── app/
+│   │   ├── dashboard/
+│   │   │   └── page.tsx
+│   │   ├── register/
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   │
+│   ├── components/
+│   │   ├── Input.tsx
+│   │   └── InputLogin.tsx
+│   │
+│   ├── context/
+│   │   └── UserContext.tsx
+│   │
+│   └── utils/
+│       └── ComponentsStyle.ts
+│
+└── .gitignore
 ```
 
-## Back-End
+## Banco de Dados
 
-### `index.ts`
+O banco de dados utilizado é PostgreSQL.
 
-É o ponto de entrada da API.
+A estrutura é gerenciada através do Prisma.
 
-Responsabilidades:
-
-- Inicializar o Express.
-- Habilitar o recebimento de JSON.
-- Configurar o CORS.
-- Registrar as rotas.
-- Inicializar a conexão com o banco.
-- Iniciar o servidor na porta `3001`.
-
-### `routes.ts`
-
-Centraliza as rotas relacionadas aos usuários:
-
-```ts
-router.post("/login", login);
-router.post("/cadastro", register);
-```
-
-### `user-controller.ts`
-
-Contém a lógica das operações de login e cadastro.
-
-No login, o Back-End consulta o usuário através do Prisma utilizando e-mail e senha.
-
-No cadastro, primeiro verifica se o e-mail já existe e, caso não exista, cria um novo usuário no banco.
-
-### `db.ts`
-
-Responsável pela configuração da conexão entre Prisma e PostgreSQL utilizando o adaptador `@prisma/adapter-pg`.
-
-A URL de conexão é obtida através da variável de ambiente `DATABASE_URL`.
-
-### `schema.prisma`
-
-Define o modelo de usuário utilizado pelo banco de dados:
+O projeto possui um modelo `User` contendo:
 
 ```prisma
 model User {
@@ -221,271 +188,213 @@ model User {
 }
 ```
 
-O campo `email` possui uma restrição de unicidade, impedindo que dois usuários sejam cadastrados com o mesmo endereço.
+O campo `email` possui restrição de unicidade para evitar o cadastro de dois usuários com o mesmo endereço de e-mail.
 
-## Front-End
+O campo `id` utiliza UUID como identificador do usuário.
 
-### `layout.tsx`
+## Prisma
 
-Define a estrutura global da aplicação e envolve as páginas com o `UserProvider`.
+O Prisma é utilizado como ORM para realizar a comunicação entre o Back-End e o PostgreSQL.
 
-Isso permite que os dados do usuário logado sejam compartilhados entre os componentes que utilizam o contexto.
-
-### Página de Login
-
-A página inicial contém os campos de e-mail e senha e realiza uma requisição `POST` para a API:
+A aplicação utiliza o adapter PostgreSQL:
 
 ```ts
-const response = await fetch("http://localhost:3001/login", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    email: user.Email,
-    password: user.Senha,
-  }),
-});
+import { PrismaPg } from "@prisma/adapter-pg";
 ```
 
-Após uma resposta bem-sucedida, os dados do usuário são armazenados no `UserContext` e o usuário é direcionado para:
+A conexão utiliza uma variável de ambiente para evitar que informações de acesso ao banco sejam diretamente inseridas no código.
 
-```text
-/dashboard
+```env
+DATABASE_URL="sua_database_url"
 ```
 
-### Página de Cadastro
+## Migrations
 
-A página de cadastro recebe:
+A estrutura do banco de dados é controlada através do Prisma Migrate.
 
-- Nome.
-- E-mail.
-- Senha.
-- Confirmação de senha.
+As migrations permitem registrar as alterações realizadas no schema do banco e reproduzir a estrutura necessária em outros ambientes.
 
-Antes de enviar os dados para a API, são realizadas validações básicas no próprio Front-End.
+Para verificar o estado das migrations:
 
-Após o cadastro bem-sucedido, o usuário é redirecionado para a página de login.
-
-### Dashboard
-
-O dashboard utiliza o `UserContext` para acessar os dados do usuário que realizou o login.
-
-São exibidos:
-
-- Nome.
-- E-mail.
-- ID.
-
-### `Input.tsx`
-
-Componente reutilizável utilizado pelos campos da página de cadastro.
-
-Recebe propriedades como:
-
-- Nome do campo.
-- Tipo do input.
-- Placeholder.
-- Estado atual.
-- Função para atualização do estado.
-
-### `InputLogin.tsx`
-
-Componente reutilizável específico para os campos da página de login.
-
-### `UserContext.tsx`
-
-Responsável pelo gerenciamento global dos dados do usuário logado utilizando a Context API do React.
-
-O contexto disponibiliza:
-
-```ts
-loggedUser;
-setLoggedUser;
+```bash
+npx prisma migrate status
 ```
 
-Isso permite que diferentes páginas da aplicação tenham acesso aos dados do usuário após o login.
+Para aplicar migrations em um ambiente de produção:
 
-## Fluxo da Aplicação
-
-### Cadastro
-
-```text
-Usuário
-   │
-   ▼
-Página de Cadastro
-   │
-   │ POST /cadastro
-   ▼
-Express
-   │
-   ▼
-Controller
-   │
-   ▼
-Prisma
-   │
-   ▼
-PostgreSQL
+```bash
+npx prisma migrate deploy
 ```
 
-Após o cadastro, o usuário retorna para a página de login.
+Para gerar o Prisma Client:
 
-### Login
-
-```text
-Usuário
-   │
-   ▼
-Página de Login
-   │
-   │ POST /login
-   ▼
-Express
-   │
-   ▼
-Controller
-   │
-   ▼
-Prisma
-   │
-   ▼
-PostgreSQL
-   │
-   ▼
-Dados do usuário
-   │
-   ▼
-UserContext
-   │
-   ▼
-Dashboard
+```bash
+npx prisma generate
 ```
 
 ## Variáveis de Ambiente
 
-O Back-End utiliza uma variável de ambiente para realizar a conexão com o PostgreSQL
+Informações sensíveis não devem ser versionadas junto ao código.
 
-## Configuração do Back-End
+O projeto utiliza variáveis de ambiente para configurar a conexão com o banco de dados e outras informações específicas de cada ambiente.
 
-Acesse a pasta do Back-End:
+Exemplo:
 
-```bash
-cd backend
+```env
+DATABASE_URL="sua_database_url"
 ```
 
-Instale as dependências:
+O arquivo `.env` não é enviado para o repositório.
 
-```bash
-npm install
+O `.gitignore` também impede o versionamento de arquivos e diretórios gerados ou específicos do ambiente local:
+
+```gitignore
+node_modules/
+.env
+.env.*
+!.env.example
+
+.next/
+dist/
+
+generated/
 ```
 
-Configure o arquivo `.env` com a variável `DATABASE_URL`.
+## Segurança
 
-Depois, configure o Prisma conforme o banco de dados utilizado e execute as migrações necessárias.
+Durante a preparação do projeto para produção, foram aplicados alguns cuidados importantes.
 
-O servidor é iniciado na porta:
+### Variáveis sensíveis
 
-```text
-3001
+As credenciais do banco de dados não ficam diretamente no código-fonte nem são enviadas para o GitHub.
+
+### CORS
+
+O Back-End utiliza CORS para controlar quais aplicações podem realizar requisições para a API.
+
+### Validação de cadastro
+
+Antes de criar um usuário, o Back-End verifica se o e-mail já está cadastrado:
+
+```ts
+const findUser = await prisma.user.findUnique({
+  where: { email: user.email },
+});
 ```
 
-## Configuração do Front-End
+Caso o usuário já exista, a API retorna uma resposta informando que o e-mail já está cadastrado.
 
-Acesse a pasta do Front-End:
+### Proteção do dashboard
 
-```bash
-cd frontend
-```
+O acesso à área de dashboard foi protegido para impedir que um usuário não autenticado consiga simplesmente acessar a rota diretamente pela URL.
 
-Instale as dependências:
-
-```bash
-npm install
-```
-
-Execute o projeto:
-
-```bash
-npm run dev
-```
-
-Por padrão, o Next.js ficará disponível em:
-
-```text
-http://localhost:3000
-```
-
-O Back-End utilizado pelo Front-End está configurado para:
-
-```text
-http://localhost:3001
-```
+Essa etapa foi importante para entender que esconder uma página através da interface não é suficiente para garantir controle de acesso.
 
 ## Boas Práticas Aplicadas
 
+- Componentização com React.
+- Separação entre páginas e componentes reutilizáveis.
+- Separação de responsabilidades no Back-End.
+- Organização das rotas da API.
+- Controllers separados para as operações de usuário.
+- Tipagem utilizando TypeScript.
+- Utilização de interfaces e types.
+- Context API para compartilhamento do estado do usuário.
+- Utilização de Prisma como ORM.
+- Utilização de migrations para controle do banco.
+- PostgreSQL como banco de dados relacional.
+- Variáveis de ambiente para informações sensíveis.
+- Configuração de CORS.
+- Separação entre ambiente local e ambiente de produção.
+- Proteção de acesso ao dashboard.
+- Organização do projeto em Front-End e Back-End.
+- Utilização de componentes reutilizáveis para campos de formulário.
+
+## Deploy
+
+O projeto foi dividido em serviços para o ambiente de produção.
+
 ### Front-End
 
-- Componentização da interface.
-- Criação de componentes reutilizáveis para inputs.
-- Separação de responsabilidades entre páginas, componentes, contexto e utilitários.
-- Tipagem dos dados utilizando TypeScript.
-- Gerenciamento de estado com `useState`.
-- Gerenciamento de estado global utilizando Context API.
-- Uso do `useRouter` para navegação programática.
-- Renderização de mensagens de erro.
-- Separação dos estilos reutilizáveis em uma constante.
-- Utilização do App Router do Next.js.
+O Front-End foi hospedado na Vercel.
+
+```text
+https://fullstack-login-page-kappa.vercel.app
+```
 
 ### Back-End
 
-- Separação das rotas e controllers.
-- Utilização do Express para criação da API.
-- Tipagem com TypeScript.
-- Utilização do Prisma como ORM.
-- Persistência dos dados em PostgreSQL.
-- Configuração do CORS.
-- Uso de variáveis de ambiente para a conexão com o banco.
-- Restrição de e-mail único no modelo do Prisma.
+A API foi hospedada no Render.
 
-### Integração
+```text
+https://fullstack-login-backend-kmjn.onrender.com
+```
 
-- Comunicação entre Front-End e Back-End utilizando HTTP.
-- Envio e recebimento de dados no formato JSON.
-- Separação entre interface, API e banco de dados.
-- Fluxo completo de cadastro e login.
+### Banco de Dados
+
+O PostgreSQL foi hospedado no Neon.
+
+A aplicação utiliza a URL de conexão através da variável de ambiente `DATABASE_URL`.
+
+## Comunicação em Produção
+
+Em ambiente local, a comunicação era realizada utilizando `localhost`.
+
+Durante o processo de deploy, foi necessário substituir essa arquitetura local pela comunicação entre os serviços hospedados.
+
+```text
+Usuário
+   │
+   ▼
+Vercel
+Front-End Next.js
+   │
+   │ HTTP
+   ▼
+Render
+API Express
+   │
+   │ Prisma
+   ▼
+Neon
+PostgreSQL
+```
+
+Essa mudança foi uma das principais etapas do projeto, pois exigiu compreender como cada parte da aplicação funciona de maneira independente.
 
 ## Aprendizados
 
-Este projeto permitiu praticar conceitos que vão além do desenvolvimento isolado de interfaces.
+Este projeto foi desenvolvido principalmente para aprofundar os conhecimentos em desenvolvimento Full Stack.
 
 Entre os principais aprendizados estão:
 
-- Como estruturar uma aplicação separando Front-End e Back-End.
-- Como criar uma API utilizando Express e TypeScript.
-- Como organizar rotas e controllers.
-- Como conectar uma API a um banco PostgreSQL utilizando Prisma.
-- Como modelar dados utilizando o Prisma Schema.
-- Como consumir uma API criada pelo próprio projeto através do `fetch`.
-- Como enviar dados de formulários utilizando requisições HTTP.
-- Como compartilhar informações entre páginas utilizando Context API.
-- Como integrar diferentes tecnologias dentro de uma mesma aplicação.
-- Como organizar responsabilidades entre as diferentes camadas de um sistema.
+- Como estruturar uma aplicação com Front-End e Back-End separados.
+- Como criar uma API utilizando Express.
+- Como conectar uma API Express a um banco PostgreSQL.
+- Como utilizar Prisma para acessar o banco.
+- Como criar e aplicar migrations.
+- Como utilizar variáveis de ambiente.
+- Como configurar CORS.
+- Como compartilhar dados entre componentes através do Context API.
+- Como proteger uma rota de acesso no Front-End.
+- Como realizar deploy do Front-End e Back-End separadamente.
+- Como conectar um banco PostgreSQL remoto à aplicação.
+- Como adaptar uma aplicação que funciona em `localhost` para um ambiente de produção.
+- Como pensar em segurança e configuração além da implementação da interface.
 
-## Observação sobre Autenticação e Segurança
+## Status do Projeto
 
-Este projeto foi desenvolvido com foco em aprendizado e integração Full Stack.
+Projeto concluído e funcional em ambiente de produção.
 
-A implementação atual **não utiliza um sistema de autenticação baseado em sessão ou token**, como JWT, e as senhas são armazenadas diretamente no banco de dados.
+O objetivo principal foi transformar uma aplicação inicialmente executada apenas localmente em uma aplicação Full Stack publicada, conectando:
 
-Em uma aplicação de produção, seria necessário implementar mecanismos adicionais de segurança, principalmente:
-
-- Hash de senhas com uma biblioteca apropriada.
-- Autenticação baseada em sessão ou tokens.
-- Proteção das rotas privadas.
-- Validação mais robusta dos dados recebidos pela API.
-- Tratamento adequado de erros no servidor.
-- Configuração de variáveis de ambiente para diferentes ambientes.
-- Controle de acesso ao dashboard.
+- Next.js
+- Express
+- Prisma
+- PostgreSQL
+- Vercel
+- Render
+- Neon
 
 ## Autor
 
